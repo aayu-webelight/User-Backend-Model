@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { User } from "../models/UserModel";
+import { User } from "@/models/UserModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
@@ -50,10 +50,10 @@ router.post("/update/:name", async (req: Request, res: Response) => {
   const change = req.body;
   if (check) {
     User.updateOne({ name: req.params.name }, { $set: { ...change } })
-      .then((result) => {
+      .then((result:any) => {
         res.status(201).send(result);
       })
-      .catch((err) => {
+      .catch((err:any) => {
         res.status(400).send(err);
       });
   }
@@ -66,10 +66,10 @@ router.delete("/delete/:name", async (req: Request, res: Response) => {
 
   if (check) {
     User.deleteOne({ name: req.params.name })
-      .then((result) => {
+      .then((result:any) => {
         res.status(201).send(result);
       })
-      .catch((err) => {
+      .catch((err:any) => {
         res.status(400).send(err);
       });
   }

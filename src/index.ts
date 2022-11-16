@@ -3,8 +3,8 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 // import cors from "cors";
 import { config } from "dotenv";
-import { todoRouter } from "./routes/todo";
-import { userRouter } from "./routes/userRouter";
+import { todoRouter } from "@/routes/todo";
+import { userRouter } from "@/routes/userRouter";
 
 const app: Application = express();
 
@@ -35,12 +35,7 @@ app.use("/user", userRouter);
 const DB: string = process.env.MONGODB || "mongodb://localhost:27017/day1";
 
 mongoose.connect(
-  DB,
-  // {
-  //   useCreateIndex: true,
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  // },
+  DB, 
   () => {
     console.log("connected to database");
   }

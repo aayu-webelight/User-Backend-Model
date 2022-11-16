@@ -54,6 +54,12 @@ router.post("/update/:name", async (req: Request, res: Response) => {
   // console.log(req.params.name)
   const check = await User.findOne({ name: req.params.name.toLowerCase() });
   const change = req.body;
+  if(change.name!=undefined){
+    change.name=change.name.toLowerCase()
+  }
+  if(change.password!=undefined){
+    change.password=await bcrypt.hash(req.body.password, 10);
+  }
   if (check) {
     try{
       const trial=await User.updateOne({ name: req.params.name }, { $set: { ...change } })

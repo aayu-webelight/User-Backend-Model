@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express'
-import { Todo } from '@/models/todo'
+import { Todo } from 'models/todo'
 
 const router = express.Router()
 
@@ -9,8 +9,9 @@ router.get('/api/todo', async (req: Request, res: Response) => {
 })
 
 router.post('/api/todo', async (req: Request, res: Response) => {
-  const todo = Todo.build(req.body)
-  await todo.save()
+  const todo= await Todo.create(
+  req.body
+  )
   return res.status(201).send(todo)
 })
 

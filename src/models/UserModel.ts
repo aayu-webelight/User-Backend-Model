@@ -25,15 +25,8 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.statics.build = (attr: IUser) => {
-  return new User(attr);
-};
-
 const User = mongoose.model<UserDoc, userModelInterface>("Users", userSchema);
 
-User.build({
-  name: "some title",
-  password: "some password"
-});
+
 
 export { User };

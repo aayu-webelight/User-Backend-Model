@@ -28,20 +28,26 @@ router.post("/login", async (req: Request, res: Response) => {
   const check = await User.findOne({ name: req.body.name.toLowerCase() });
   if (!check) {
     return res.status(400).send("User does not exists");
-  }
-  const secretkey: any = process.env.SECRET_KEY;
+  }  
   const passcheck = await bcrypt.compare(req.body.password, check.password);
   if (passcheck) {
+    const secretkey: any = process.env.SECRET_KEY;
     const authToken = jwt.sign(req.body.name, secretkey);
-    res.status(201).send({ authToken });
+    return res.status(201).send({ authToken });
   }
-  res.status(400).send("Wrong Pass");
+  return res.status(400).send("Wrong Pass");
 });
 
 router.get("/find/:name", async (req: Request, res: Response) => {
   // console.log(req.params.name)
   const check = await User.findOne({ name: req.params.name.toLowerCase() });
-  return res.status(200).send(check);
+  // console.log({ name: req.params.name.toLowerCase() })
+  // console.log(check)
+  if(check){
+    return res.status(200).send(check);
+  }
+
+  return res.status(400).send("User does not exist");
 });
 
 router.post("/update/:name", async (req: Request, res: Response) => {
@@ -49,31 +55,28 @@ router.post("/update/:name", async (req: Request, res: Response) => {
   const check = await User.findOne({ name: req.params.name.toLowerCase() });
   const change = req.body;
   if (check) {
-    User.updateOne({ name: req.params.name }, { $set: { ...change } })
-      .then((result:any) => {
-        res.status(201).send(result);
-      })
-      .catch((err:any) => {
-        res.status(400).send(err);
-      });
+    try{
+      const trial=await User.updateOne({ name: req.params.name }, { $set: { ...change } })
+      return res.status(201).send(trial)
+    }
+    catch(error){
+      res.status(400).send(error);
+    }
   }
   return res.status(400).send("User does not exist");
 });
 
 router.delete("/delete/:name", async (req: Request, res: Response) => {
-  // console.log(req.params.name)
   const check = await User.findOne({ name: req.params.name });
-
   if (check) {
-    User.deleteOne({ name: req.params.name })
-      .then((result:any) => {
-        res.status(201).send(result);
-      })
-      .catch((err:any) => {
-        res.status(400).send(err);
-      });
+    try{
+      const trial=await User.deleteOne({ name: req.params.name })
+      return res.status(201).send(trial)
+    }
+    catch(error){
+      res.status(400).send(error);
+    }
   }
-  // console.log(check)
   return res.status(400).send("User does not exist");
 });
 

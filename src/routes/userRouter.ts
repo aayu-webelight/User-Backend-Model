@@ -32,7 +32,7 @@ router.post("/login", async (req: Request, res: Response) => {
   }
   const passcheck = await bcrypt.compare(req.body.password, user.password);
   if (passcheck) {
-    const authToken = jwt.sign(req.body.name, String(process.env.SECRET_KEY));
+    const authToken = jwt.sign(req.body.name, process.env.SECRET_KEY as string);
     return res.status(201).send({ authToken });
   }
   return res.status(400).send("Wrong Pass");

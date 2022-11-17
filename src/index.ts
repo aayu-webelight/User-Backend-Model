@@ -3,10 +3,10 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import { config } from "dotenv";
 import { todoRouter } from "routes/todo";
-import cors from 'cors'
+import cors from "cors";
 import { userRouter } from "routes/userRouter";
 
-const app : Application = express();
+const app: Application = express();
 
 config();
 
@@ -23,15 +23,11 @@ app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
 });
 
-
 app.use(cors({ origin: true }));
 
 app.use("/todo", todoRouter);
 app.use("/user", userRouter);
 
-mongoose.connect(
-  process.env.MONGODB as string, 
-  () => {
-    console.log("connected to database");
-  }
-);
+mongoose.connect(process.env.MONGODB as string, () => {
+  console.log("connected to database");
+});

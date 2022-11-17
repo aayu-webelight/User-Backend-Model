@@ -23,15 +23,26 @@ Login a user-
 
 Get Details of A specific User-
     METHOD: "POST"
-    Url: "/user/find/:name"    //where ":name" is replaced by user's name
+    Url: "/user/find"
+    Headers: {
+        authorization: //containing the authtoken we get in login
+        }
 
 Update Details of specific user-
     METHOD: "POST"
-    Url: "/user/update/:name"    //where ":name" is replaced by user's name
+    Url: "/user/update" 
+    Headers: {
+        authorization: //containing the authtoken we get in login
+        }
+   
 
 Delete Details of specific user-
     METHOD: "DELETE"
-    Url: "/user/delete/:name"    //where ":name" is replaced by user's name
+    Url: "/user/delete"  
+    Headers: {
+        authorization: //containing the authtoken we get in login
+        }
+
     
 Delete all Users-
     METHOD: "DELETE"

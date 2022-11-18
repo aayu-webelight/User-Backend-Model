@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 interface ITodo {
   title: string;
@@ -6,7 +6,7 @@ interface ITodo {
 }
 
 interface todoModelInterface extends mongoose.Model<TodoDoc> {
-  build(attr: ITodo): TodoDoc
+  build(attr: ITodo): TodoDoc;
 }
 
 interface TodoDoc extends mongoose.Document {
@@ -17,15 +17,14 @@ interface TodoDoc extends mongoose.Document {
 const todoSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
-    type: String, 
-    required: true
-  }
-})
+    type: String,
+    required: true,
+  },
+});
 
-const Todo = mongoose.model<TodoDoc, todoModelInterface>('Todo', todoSchema)
+const Todo = mongoose.model<TodoDoc, todoModelInterface>("Todo", todoSchema);
 
-
-export { Todo }
+export { Todo };

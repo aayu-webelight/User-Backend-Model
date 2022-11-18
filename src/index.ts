@@ -13,21 +13,21 @@ config();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(cors({ origin: true }));
+
 app.get("/", (req: Request, res: Response) => {
   res.send("Server Running");
 });
-
-const PORT = process.env.PORT || 8010;
-
-app.listen(PORT, () => {
-  console.log(`Server is running on PORT ${PORT}`);
-});
-
-app.use(cors({ origin: true }));
 
 app.use("/todo", todoRouter);
 app.use("/user", userRouter);
 
 mongoose.connect(process.env.MONGODB as string, () => {
   console.log("connected to database");
+});
+
+const PORT = process.env.PORT || 8010;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on PORT ${PORT}`);
 });

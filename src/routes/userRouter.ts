@@ -13,7 +13,7 @@ import {
 
 const router = Router();
 
-router.get("/findall", user, findallusers);
+router.get("/findall", findallusers);
 
 router.post("/add", addauser);
 

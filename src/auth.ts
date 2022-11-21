@@ -7,7 +7,7 @@ async function user(req: Request, res: Response, next: NextFunction) {
     const token = auth.split(" ");
     const user = verify(token[1], process.env.SECRET_KEY as string);
     if (user) {
-      req.body = user;
+      req.body.user = user;
       next();
     }
   } catch (error) {

@@ -37,7 +37,7 @@ const findallusers = async (req: Request, res: Response) => {
 async function deleteauser(req: Request, res: Response) {
   try {
     const deleteduser = await User.deleteOne({
-      name: req.body.name,
+      name: req.body.user.name,
     });
     return res.status(200).send(deleteduser);
   } catch (error) {
@@ -46,7 +46,7 @@ async function deleteauser(req: Request, res: Response) {
 }
 
 const findauser = async (req: Request, res: Response) => {
-  const user = await User.findOne({ name: req.body.name });
+  const user = await User.findOne({ name: req.body.user.name });
   if (user) {
     return res.status(200).send(user);
   }
@@ -54,7 +54,8 @@ const findauser = async (req: Request, res: Response) => {
 };
 
 const updateauser = async (req: Request, res: Response) => {
-  const user = await User.findOne({ name: req.body.name });
+  console.log(req.body)
+  const user = await User.findOne({ name: req.body.user.name });
   if (user) {
     const change = req.body;
     if (change.password !== undefined) {

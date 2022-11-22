@@ -1,103 +1,31 @@
-import express, { Request, Response } from 'express'
-import { User } from '../../models/UserModel'
-import jwt from 'jsonwebtoken'
-import bcrypt from 'bcryptjs'
+import { Router } from "express";
 
-const router = express.Router()
+import { auth } from "Middleware/auth";
+import {
+  addUser,
+  deleteAllUsers,
+  deleteUser,
+  findAllUsers,
+  findUser,
+  loginUser,
+  updateUser,
+} from "Controllers/UserController";
 
-router.get('/findall', async (req: Request, res: Response) => {
-  const users = await User.find({})
-  return res.status(200).send(users)
-})
+const userRouter = Router();
 
-router.post('/add', async (req: Request, res: Response) => {
-  // console.log(req.body.name)
-  const check = await User.findOne({name:req.body.name.toLowerCase()})
-  if(!check){
-    const name = req.body.name.toLowerCase();
-    const password=await bcrypt.hash(req.body.password, 10);
-    const user = User.build({ name, password })
-    await user.save()
-    return res.status(201).send(user)
-  }
-  else{
-    // console.log(check)
-    return res.status(400).send("User exists")
-    
-  }
-})
+userRouter.get("/findall", findAllUsers);
 
-router.post('/login', async (req: Request, res: Response) => {
-  // console.log(req.body.name)
-  const check = await User.findOne({name:req.body.name.toLowerCase()})
-  if(!check){
-    return res.status(400).send("User does not exists")
-  }
-  else{
-    const secretkey : any=process.env.SECRET_KEY
-    const passcheck=await bcrypt.compare(req.body.password, check.password)
-    if(passcheck){
-      const authToken = jwt.sign(req.body.name, secretkey);
-      res.status(201).send({authToken})
-    }else{
-      res.status(400).send("Wrong Pass")
-    }
-    
-  }
-})
+userRouter.post("/add", addUser);
 
+userRouter.post("/login", loginUser);
 
+userRouter.get("/find", auth, findUser);
 
-router.get('/find/:name', async (req: Request, res: Response) => {
-  // console.log(req.params.name)
-  const check = await User.findOne({name:req.params.name.toLowerCase()})
-  return res.status(200).send(check)
-})
+userRouter.post("/update", auth, updateUser);
 
-router.post('/update/:name', async (req: Request, res: Response) => {
-  // console.log(req.params.name)
-  const check = await User.findOne({name:req.params.name.toLowerCase()})
-  const change=req.body
-  if(check){
-    User.updateOne({name:req.params.name}, {$set:{...change}}).then((result)=>{
-      res.status(201).send(result)
-    }).catch((err)=>{
-      res.status(400).send(err)
-    })
-    
-  }
-  else{
-    // console.log(check)
-    return res.status(400).send("User does not exist")
-    
-  }
-})
+userRouter.delete("/delete", auth, deleteUser);
 
-router.delete('/delete/:name', async (req: Request, res: Response) => {
-  // console.log(req.params.name)
-  const check = await User.findOne({name:req.params.name})
-  
-  if(check){
-    User.deleteOne({name:req.params.name}).then((result)=>{
-      res.status(201).send(result)
-    }).catch((err)=>{
-      res.status(400).send(err)
-    })
-    
-  }
-  else{
-    // console.log(check)
-    return res.status(400).send("User does not exist")
-    
-  }
-})
+userRouter.delete("/deleteall", deleteAllUsers);
 
-
-router.delete('/deleteall', async (req: Request, res: Response) => {
-  const users = await User.deleteMany({})
-  return res.status(200).send(users)
-})
-
-
-export { router as userRouter }
-   
+// export { router as userRouter };
+export default userRouter;

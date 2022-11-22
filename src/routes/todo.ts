@@ -1,5 +1,5 @@
-import { auth } from "Middleware/auth";
-import { addTodo, findAllTodo } from "Controllers/TodoController";
+import { auth } from "middleware/auth";
+import { addTodo, findAllTodo } from "controllers/TodoController";
 import express from "express";
 
 export const todoRouter = express.Router();

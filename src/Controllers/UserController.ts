@@ -24,7 +24,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const Token = sign({ name: user.name }, process.env.SECRET_KEY as string, {
       expiresIn: "1h",
     });
-    return res.status(201).send({ Token });
+    return res.status(200).send({ Token });
   }
   return res.status(400).send("Wrong Pass");
 };
@@ -53,7 +53,7 @@ export const updateUser = async (req: Request, res: Response) => {
       { name: req.body.user.name },
       { $set: { ...change } }
     );
-    return res.status(201).send(updateduser);
+    return res.status(200).send(updateduser);
   } catch (error) {
     res.status(400).send(error);
   }

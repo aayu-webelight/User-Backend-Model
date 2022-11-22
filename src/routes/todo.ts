@@ -1,18 +1,11 @@
-import express, { Request, Response } from 'express'
-import { Todo } from 'models/todo'
+import { auth } from "Middleware/auth";
+import { addTodo, findAllTodo } from "Controllers/TodoController";
+import express from "express";
 
-const router = express.Router()
+export const todoRouter = express.Router();
 
-router.get('/api/todo', async (req: Request, res: Response) => {
-  const todo = await Todo.find({})
-  return res.status(200).json(todo)
-})
+todoRouter.get("/todo", auth, findAllTodo);
 
-router.post('/api/todo', async (req: Request, res: Response) => {
-  const todo= await Todo.create(
-  req.body
-  )
-  return res.status(201).send(todo)
-})
+todoRouter.post("/todo", auth, addTodo);
 
-export { router as todoRouter }
+// export { router as todoRouter };

@@ -1,30 +1,31 @@
 import { Router } from "express";
 
-import { user } from "auth";
+import { auth } from "Middleware/auth";
 import {
-  addauser,
-  deleteAllusers,
-  deleteauser,
-  findallusers,
-  findauser,
-  loginauser,
-  updateauser,
+  addUser,
+  deleteAllUsers,
+  deleteUser,
+  findAllUsers,
+  findUser,
+  loginUser,
+  updateUser,
 } from "Controllers/UserController";
 
-const router = Router();
+const userRouter = Router();
 
-router.get("/findall", findallusers);
+userRouter.get("/findall", findAllUsers);
 
-router.post("/add", addauser);
+userRouter.post("/add", addUser);
 
-router.post("/login", loginauser);
+userRouter.post("/login", loginUser);
 
-router.get("/find", user, findauser);
+userRouter.get("/find", auth, findUser);
 
-router.post("/update", user, updateauser);
+userRouter.post("/update", auth, updateUser);
 
-router.delete("/delete", user, deleteauser);
+userRouter.delete("/delete", auth, deleteUser);
 
-router.delete("/deleteall", user, deleteAllusers);
+userRouter.delete("/deleteall", deleteAllUsers);
 
-export { router as userRouter };
+// export { router as userRouter };
+export default userRouter;

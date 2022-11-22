@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { auth } from "Middleware/auth";
+import { auth } from "middleware/auth";
 import {
   addUser,
   deleteAllUsers,
@@ -9,7 +9,7 @@ import {
   findUser,
   loginUser,
   updateUser,
-} from "Controllers/UserController";
+} from "controllers/UserController";
 
 const userRouter = Router();
 
@@ -27,5 +27,4 @@ userRouter.delete("/delete", auth, deleteUser);
 
 userRouter.delete("/deleteall", deleteAllUsers);
 
-// export { router as userRouter };
-export default userRouter;
+export default userRouter

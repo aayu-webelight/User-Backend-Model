@@ -2,29 +2,29 @@ import { Router } from "express";
 
 import { auth } from "middleware/auth";
 import {
-  addUser,
-  deleteAllUsers,
-  deleteUser,
-  findAllUsers,
-  findUser,
-  loginUser,
-  updateUser,
-} from "controllers/UserController";
+  addUserController,
+  deleteAllUsersController,
+  deleteUserController,
+  findAllUsersController,
+  findUserController,
+  loginUserController,
+  updateUserController,
+} from "controllers/userController";
 
 const userRouter = Router();
 
-userRouter.get("/findall", findAllUsers);
+userRouter.get("/", findAllUsersController);
 
-userRouter.post("/add", addUser);
+userRouter.post("/", addUserController);
 
-userRouter.post("/login", loginUser);
+userRouter.post("/login", loginUserController);
 
-userRouter.get("/find", auth, findUser);
+userRouter.get("/:id", auth, findUserController);
 
-userRouter.post("/update", auth, updateUser);
+userRouter.put("/:id", auth, updateUserController);
 
-userRouter.delete("/delete", auth, deleteUser);
+userRouter.delete("/:id", auth, deleteUserController);
 
-userRouter.delete("/deleteall", deleteAllUsers);
+userRouter.delete("/", deleteAllUsersController);
 
-export default userRouter
+export default userRouter;

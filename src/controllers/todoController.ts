@@ -1,18 +1,18 @@
 import { Request, Response } from "express";
-import { Todo } from "models/todo";
+import { addToDo, findToDo } from "services/todoService";
 
 export const findAllTodo = async (req: Request, res: Response) => {
   try {
-    const todo = await Todo.find({});
+    const todo = await findToDo();
     return res.status(200).json(todo);
   } catch (error) {
     return res.status(400).send(error);
   }
 };
 
-export const addTodo = async (req: Request, res: Response) => {
+export const addTodoController = async (req: Request, res: Response) => {
   try {
-    const todo = await Todo.create(req.body);
+    const todo = await addToDo(req.body);
     return res.status(201).send(todo);
   } catch (error) {
     return res.status(400).send(error);

@@ -1,6 +1,6 @@
 import { verify } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { secretkey } from "config/app-config";
+import { appConfig } from "config/app-config";
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -16,7 +16,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
       throw new Error("Unauthorized");
     }
 
-    const user = verify(authToken[1], secretkey as string);
+    const user = verify(authToken[1], appConfig.secretkey as string);
 
     // console.log(req.body)
     if (user) {

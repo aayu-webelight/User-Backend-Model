@@ -1,14 +1,29 @@
-import { User } from "models/userModel";
+import { sign } from "jsonwebtoken";
+import { compare, hash } from "bcryptjs";
 import IUser from "interfaces/userInterface";
+import { User } from "models/userModel";
+import { appConfig } from "config/app-config";
 
 export const createUser = async (obj: IUser) => {
+  obj.password = await hash(obj.password, 10);
   const user = await User.create({ ...obj });
   return user;
 };
 
-export const findUser = async (name: string) => {
-  const user = await User.find({ name: name });
-  return user;
+export const addUser = async (obj: IUser) => {
+  const user: IUser[] = await User.find({ name: obj.name });
+  if (!user) {
+    return new Error("Bad Request");
+  }
+  const passcheck = await compare(obj.password, user[0].password);
+  if (passcheck) {
+    const Token = sign({ name: user[0].name }, appConfig.secretkey as string, {
+      expiresIn: "1h",
+    });
+    return Token;
+  } else {
+    return new Error("Wrong Pass");
+  }
 };
 
 export const findAllUsers = async () => {
@@ -17,6 +32,9 @@ export const findAllUsers = async () => {
 };
 
 export const updateUser = async (id: string, obj: IUser) => {
+  if (obj.password !== undefined) {
+    obj.password = await hash(obj.password, 10);
+  }
   const user = await User.findByIdAndUpdate(id, {
     $set: { ...obj },
   });

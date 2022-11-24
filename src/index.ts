@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import express, { Application, Request, Response } from "express";
 import todoRouter from "routes/todoRouter";
 import userRouter from "routes/userRouter";
-import { mongourl, port } from "config/app-config";
+import { appConfig } from "config/app-config";
 
 const app: Application = express();
 
@@ -18,10 +18,10 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Server Running");
 });
 
-mongoose.connect(mongourl as string, () => {
+mongoose.connect(appConfig.mongourl as string, () => {
   console.log("connected to database");
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on PORT ${port}`);
+app.listen(appConfig.port, () => {
+  console.log(`Server is running on PORT ${appConfig.port}`);
 });

@@ -2,7 +2,7 @@ API for:
 
 User adding-
 METHOD: "POST"
-Url: "/user/add"  
+Url: "/users"  
  Type of Input- {
 "name": "some title", //where name is unique
 "password": "some password"
@@ -10,11 +10,11 @@ Url: "/user/add"
 
 Find all Users-
 METHOD: "GET"
-Url: "/user/findall"
+Url: "/users"
 
 Login a user-
 METHOD: "POST"
-Url: "/user/login"  
+Url: "/users/login"  
  Type of Input- {
 "name": "some title", //where name is unique
 "password": "some password"
@@ -22,25 +22,25 @@ Url: "/user/login"
 
 Get Details of A specific User-
 METHOD: "POST"
-Url: "/user/find"
+Url: "/users/:id" //unique id of every user
 Headers: {
 authorization: //containing the authtoken we get in login
 }
 
 Update Details of specific user-
-METHOD: "POST"
-Url: "/user/update"
+METHOD: "PUT"
+Url: "/users/:id" //unique id of every user
 Headers: {
 authorization: //containing the authtoken we get in login
 }
 
 Delete Details of specific user-
 METHOD: "DELETE"
-Url: "/user/delete"  
- Headers: {
+Url: "/users/:id" //unique id of every user
+Headers: {
 authorization: //containing the authtoken we get in login
 }
 
 Delete all Users-
 METHOD: "DELETE"
-Url: "/user/deleteall"
+Url: "/users"

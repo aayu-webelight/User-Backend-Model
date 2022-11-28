@@ -5,70 +5,63 @@ import {
   deleteAllUsers,
   deleteUserById,
   findAllUsers,
-  addUser,
+  userLogin,
   findUserById,
   updateUser,
 } from "services/userService";
 
 export const addUserController = async (req: Request, res: Response) => {
   try {
-    const user = await createUser(req.body);
-    return res.status(201).send(user);
-  } catch (error) {
-    return res.status(400).send(error);
+    return res.status(201).send(await createUser(req.body));
+  } catch (error: any) {
+    return res.status(400).send(error.message);
   }
 };
 
 export const loginUserController = async (req: Request, res: Response) => {
   try {
-    const Token = await addUser(req.body);
-    return res.status(200).send({ Token });
-  } catch (error) {
-    return res.status(400).send("Wrong Pass");
+    return res.status(200).json(await userLogin(req.body));
+  } catch (error: any) {
+    res.status(400).send(error.message);
   }
 };
 
 export const findAllUsersController = async (req: Request, res: Response) => {
   try {
-    const users = await findAllUsers();
-    return res.status(200).send(users);
-  } catch (error) {
-    return res.status(401).send("Unauthorised");
+    return res.status(200).send(await findAllUsers());
+  } catch (error: any) {
+    return res.status(401).send(error.message);
   }
 };
 
 export const findUserController = async (req: Request, res: Response) => {
   try {
-    const user = await findUserById(req.params.id);
-    return res.status(200).send(user);
-  } catch (error) {
-    return res.status(401).send("Unauthorised");
+    return res.status(200).send(await findUserById(req.params.id));
+  } catch (error: any) {
+    return res.status(401).send(error.message);
   }
 };
 
 export const updateUserController = async (req: Request, res: Response) => {
   try {
-    const updateduser = updateUser(req.params.id, req.body);
-    return res.status(200).send(updateduser);
-  } catch (error) {
-    res.status(400).send(error);
+    return res.status(200).send(await updateUser(req.params.id, req.body));
+  } catch (error: any) {
+    res.status(400).send(error.message);
   }
 };
 
 export const deleteUserController = async (req: Request, res: Response) => {
   try {
-    const deleteduser = deleteUserById(req.params.id);
-    return res.status(200).send(deleteduser);
-  } catch (error) {
-    res.status(400).send(error);
+    return res.status(200).send(await deleteUserById(req.params.id));
+  } catch (error: any) {
+    res.status(400).send(error.message);
   }
 };
 
 export const deleteAllUsersController = async (req: Request, res: Response) => {
   try {
-    const users = deleteAllUsers();
-    return res.status(200).send(users);
-  } catch (error) {
-    res.status(400).send(error);
+    return res.status(200).send(await deleteAllUsers());
+  } catch (error: any) {
+    res.status(400).send(error.message);
   }
 };

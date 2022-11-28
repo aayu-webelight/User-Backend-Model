@@ -1,6 +1,6 @@
 import { verify } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { appConfig } from "config/app-config";
+import { appConfig } from "config/appConfig";
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -23,7 +23,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
       next();
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(401).send(error);
   }
 };

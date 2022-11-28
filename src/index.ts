@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import express, { Application, Request, Response } from "express";
 import todoRouter from "routes/todoRouter";
 import userRouter from "routes/userRouter";
-import { appConfig } from "config/app-config";
+import { appConfig } from "config/appConfig";
 
 const app: Application = express();
 

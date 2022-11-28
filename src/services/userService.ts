@@ -2,56 +2,46 @@ import { sign } from "jsonwebtoken";
 import { compare, hash } from "bcryptjs";
 import IUser from "interfaces/userInterface";
 import { User } from "models/userModel";
-import { appConfig } from "config/app-config";
+import { appConfig } from "config/appConfig";
 
 export const createUser = async (obj: IUser) => {
   obj.password = await hash(obj.password, 10);
-  const user = await User.create({ ...obj });
-  return user;
+  return await User.create(obj);
 };
 
-export const addUser = async (obj: IUser) => {
-  const user: IUser[] = await User.find({ name: obj.name });
+export const userLogin = async (obj: IUser) => {
+  const user: IUser | null = await User.findOne({ name: obj.name });
   if (!user) {
-    return new Error("Bad Request");
+    throw new Error("User not found");
   }
-  const passcheck = await compare(obj.password, user[0].password);
-  if (passcheck) {
-    const Token = sign({ name: user[0].name }, appConfig.secretkey as string, {
-      expiresIn: "1h",
-    });
-    return Token;
-  } else {
-    return new Error("Wrong Pass");
+  const passcheck = await compare(obj.password, user.password);
+  if (!passcheck) {
+    throw new Error("Wrong Pass");
   }
+  return sign({ name: user.name }, appConfig.secretkey as string, {
+    expiresIn: "1h",
+  });
 };
 
 export const findAllUsers = async () => {
-  const users = await User.find({});
-  return users;
+  return await User.find();
 };
 
-export const updateUser = async (id: string, obj: IUser) => {
+export const updateUser = async (id: string, obj: any) => {
   if (obj.password !== undefined) {
     obj.password = await hash(obj.password, 10);
   }
-  const user = await User.findByIdAndUpdate(id, {
-    $set: { ...obj },
-  });
-  return user;
+  return await User.findByIdAndUpdate(id, obj);
 };
 
 export const findUserById = async (id: string) => {
-  const user = await User.findById(id);
-  return user;
+  return await User.findById(id);
 };
 
 export const deleteUserById = async (id: string) => {
-  const user = await User.findByIdAndDelete(id);
-  return user;
+  return await User.findByIdAndDelete(id);
 };
 
 export const deleteAllUsers = async () => {
-  const response = await User.deleteMany({});
-  return response;
+  return await User.deleteMany();
 };
